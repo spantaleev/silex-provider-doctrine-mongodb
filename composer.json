@@ -10,7 +10,7 @@
 		}
 	],
 	"require": {
-		"doctrine/mongodb": ">=1.0,<1.4"
+		"doctrine/mongodb": ">=1.0,<1.5"
 	},
 	"autoload": {
 		"psr-0": {
