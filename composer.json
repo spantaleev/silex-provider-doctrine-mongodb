@@ -2,7 +2,7 @@
 	"name": "devture/silex-provider-doctrine-mongodb",
 	"description": "Silex provider for MongoDB integration via Doctrine",
 	"keywords": ["silex", "doctrine", "mongodb"],
-	"license": "BSD",
+	"license": "BSD-3-Clause",
 	"authors": [
 		{
 			"name": "Slavi Pantaleev",
