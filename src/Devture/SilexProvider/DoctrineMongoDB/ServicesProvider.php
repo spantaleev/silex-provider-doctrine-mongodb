@@ -1,46 +1,44 @@
 <?php
 namespace Devture\SilexProvider\DoctrineMongoDB;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Doctrine\MongoDB\Connection;
 use Doctrine\MongoDB\Configuration;
 use Doctrine\Common\EventManager;
 
-class ServicesProvider implements ServiceProviderInterface {
+class ServicesProvider implements \Pimple\ServiceProviderInterface, \Silex\Api\BootableProviderInterface {
 
-	public function __construct($namespace, array $config) {
-		$defaultConfig = array(
+	public function __construct(string $namespace, array $config) {
+		$defaultConfig = [
 			'server' => null,
-			'options' => array(
+			'options' => [
 				'connect' => false,
-			),
-		);
+			],
+		];
 		$this->namespace = $namespace;
 		$this->config = array_merge($defaultConfig, $config);
 	}
 
-	public function register(Application $app) {
+	public function register(\Pimple\Container $container) {
 		$namespace = $this->namespace;
 		$config = $this->config;
 
-		$app[$namespace . '.connection'] = $app->share(function ($app) use ($namespace, $config) {
-			$configuration = $app[$namespace . '.configuration'];
-			$eventManager = $app[$namespace . '.event_manager'];
+		$container[$namespace . '.connection'] = function ($container) use ($namespace, $config) {
+			$configuration = $container[$namespace . '.configuration'];
+			$eventManager = $container[$namespace . '.event_manager'];
 			return new Connection($config['server'], $config['options'], $configuration, $eventManager);
-		});
+		};
 
-		$app[$namespace . '.configuration'] = $app->share(function () {
+		$container[$namespace . '.configuration'] = function () {
 			return new Configuration();
-		});
+		};
 
-		$app[$namespace . '.event_manager'] = $app->share(function () {
+		$container[$namespace . '.event_manager'] = function () {
 			return new EventManager();
-		});
+		};
 
 	}
 
-	public function boot(Application $app) {
+	public function boot(\Silex\Application $container) {
 
 	}
 
